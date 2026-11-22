@@ -106,6 +106,7 @@ The hidden `_agents` sheet and `references/agent-rules.md` in the plugin hold, f
   - `LISTED` (in `marketplace.json`)
 
   The title attribute holds the one-line reason.
+- **Drift**, beside the pill: run `sh "${CLAUDE_SKILL_DIR}/../new-plugin/scripts/drift-check.sh" <plugin>` and show its last line (`drift: ok`, or the number of copies). A copy of a shared file means a skill may read an old rule: show it in red with the files it names.
 - Mark every skill, command, connector or hook that can change things with the `change` chip and its approver. Anything above "read" with no approver shows `approver: open` in red.
 
 ## 3. Show it

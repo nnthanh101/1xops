@@ -38,6 +38,8 @@ Before the job, read the buyer's own documents (business case, strategy or launc
 
 Then show the business owner a five-line read-back and ask them to confirm or correct it. A row with no source stays `open`.
 
+If the job is close to a row in `references/scenarios.md` (commerce increment, shopping assistant, cloud cost review, cloud operations, AI spend and use, answer-engine content), use that row's questions to fill step 0 faster. Record the starter in the spec, and replace every value with the team's own: a starter never supplies a measure or a figure.
+
 ### Naming, from the Lifecycle sheet
 | Part | Named for | Form |
 |---|---|---|
@@ -99,7 +101,11 @@ Use the words the teams already use in their documents. A name never carries the
     - If neither is available, write the spec only and say that the workbook needs the `xlsx` skill.
   - The workbook is where each role edits its own decisions; `/1xops:overview` keeps it and the plugin in sync.
   - Put the redacted previous artefacts in `workflows/<job-slug>/evidence/`: `last-run.md`, `accepted-1.md`, `dismissed-1.md`, and the branded sample `sample-<brand>.md`.
-  - Put each replay case in `workflows/<job-slug>/evals/<case>/`, in the format `claude plugin eval` runs: `prompt.md`, the input the plugin gets, and `graders/expected.md`, what a correct answer must contain or must not.
+  - Put each replay case in `workflows/<job-slug>/evals/<case>/`, in the format `claude plugin eval` runs (shapes in `/1xops:new-plugin`'s `references/component-schemas.md`, Evals):
+    - `prompt.md`, the input the plugin gets, with `runs: 3`;
+    - `graders/`, **one file per fact** a correct answer must contain or must not, so one wrong fact does not fail the whole case; a `regex` grader when the fact is exact, an `llm` grader otherwise;
+    - one `tool_used` grader that the plugin's own skill or command ran, so a pass without the plugin does not count;
+    - `inputs/` for the files the case reads, and a saved tool reply in `evals/mocks/<connector>/` when a case calls a connector; never a live customer system.
   - Change no other file. Stage only the files you wrote (`git add <those paths>`), so they show up for review; never commit or push. The person commits.
 - **Desktop workspace:** write the same files (spec, workbook, evidence, evals) to the outputs folder.
 - **Chat:** show the spec in full in one message so it can be saved. Return the workbook as a file if code execution is available.

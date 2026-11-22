@@ -399,3 +399,69 @@ Every plugin should include a README with:
 3. **Setup** — any required environment variables or configuration
 4. **Usage** — how to trigger each skill
 5. **Customization** — if CONNECTORS.md exists, mention it
+
+## Shared references
+
+Keep a file that several skills read (rules, a report format, a glossary) **once**, in the plugin's root `references/`.
+A skill points to it by the path from its own folder, `../../references/<file>`, and says it is the plugin's own file.
+`${CLAUDE_PLUGIN_ROOT}` is replaced in hooks, connector settings, commands and agents, but not inside a skill's text.
+Never copy a shared file into a skill's folder: copies go stale. `scripts/drift-check.sh <plugin>` fails on a copy.
+
+## Evals
+
+`claude plugin eval <plugin>` runs every folder in `evals/` twice, with and without the plugin, and reports the delta.
+
+```
+evals/
+├── <case>/
+│   ├── prompt.md              # the request, with front matter
+│   ├── inputs/                # files the case reads (optional)
+│   └── graders/
+│       ├── <one-fact>.md      # one file per fact
+│       └── plugin-used.md     # proves the plugin's own part ran
+└── mocks/<connector>/         # saved tool replies, when a case calls a connector
+    ├── _tools.json            # the connector's tool list, saved once
+    └── <tool>.md              # one saved reply per tool
+```
+
+`prompt.md`:
+
+```markdown
+---
+runs: 3
+max_turns: 15
+allowed_tools: [Read, Glob, Grep, Skill]
+tags: [replay]
+---
+
+/<plugin>:<command> <arguments>
+```
+
+One grader per fact. An `llm` grader states one pass and one fail line:
+
+```markdown
+---
+type: llm
+---
+
+PASS if the response <one fact a correct answer has>.
+FAIL if it <the wrong answer this case is known for>.
+```
+
+An exact fact uses a `regex` grader (`pattern`, `flags`, `match: contains` or `not_contains`). Every case also has one
+`tool_used` grader, so a run that passes without the plugin is not counted for it:
+
+```markdown
+---
+type: tool_used
+arm: with-only
+tool: Skill
+input_match: '"skill"\s*:\s*"<plugin>:(<command>|<skill>)"'
+---
+```
+
+A saved reply (`mocks/<connector>/<tool>.md`) has `type: fixed` front matter and the tool's reply as its body. Save it from
+a public sample or a redacted run; never from a live customer system.
+
+Why one grader per fact: a single grader that lists every fact fails the whole case for one miss, so the with and without
+runs both score near 0 and the delta says nothing.
