@@ -69,9 +69,9 @@ its own licence.
 
 Derived code (copied once; no upstream link is kept or tracked)
   1xops plugin builder skills                                                      Apache-2.0   plugins/1xops/skills/
-    Approved by the maintainer on 2026-11-20 (1XOPS-027). customize-plugin and new-plugin are derived from
+    Approved by the maintainer on 2026-11-20 (1XOPS-027). plugin (merged on 2026-11-24 from customize-plugin and new-plugin) is derived from
     cowork-plugin-management (https://github.com/anthropics/knowledge-work-plugins, commit e91a134);
-    recommend-setup from claude-code-setup, improve-instructions and capture-learnings from claude-md-management
+    check's setup mode (recommend-setup until 2026-11-24) from claude-code-setup, improve (merged on 2026-11-24 from improve-instructions and capture-learnings) from claude-md-management
     (https://github.com/anthropics/claude-plugins-official, commit 30c0ac7). discover is new. overview takes its page
     layout (the overview template; its stylesheet was re-authored on 2026-11-20) and close-out pattern from
     https://github.com/1xOps/managed-agents (commit 6d37c08), itself derived from Anthropic's Apache-2.0 reference skill;

@@ -6,7 +6,7 @@
 set -uo pipefail
 cd "$(git rev-parse --show-toplevel)"
 out=tmp/evals/$(date -u +%Y%m%dT%H%M%SZ); mkdir -p "$out"; ln -sfn "$(basename "$out")" tmp/evals/latest
-# A plugin that declares dependencies loads nothing when one is missing, and the eval's sandbox has none of them: the
+# A plugin that declares dependencies loads nothing when one is missing (1xops declares none since 24 Nov 2026), and the eval's sandbox has none of them: the
 # with-plugin arm would then grade the host alone. So the cases run on a copy without `dependencies`; none of them needs
 # a library plugin (a case that does says so in its prompt).
 copy=$(mktemp -d)/1xops; trap 'rm -rf "$(dirname "$copy")"' EXIT

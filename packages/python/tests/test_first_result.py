@@ -234,7 +234,7 @@ def front_matter(text: str) -> dict[str, str]:
 
 
 def test_check_command_runs_only_doctor():
-    text = (REPO / "plugins/1xops/commands/check.md").read_text()
+    text = (REPO / "plugins/1xops/skills/check/SKILL.md").read_text()
     allowed = front_matter(text)["allowed-tools"]
     assert allowed == "Bash(1xops doctor:*), Bash(command -v 1xops)"
     body = text.split("---", 2)[2].lower()

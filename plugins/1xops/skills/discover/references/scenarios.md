@@ -13,5 +13,5 @@ a spec. If no row fits, write "none" and start from the last real run.
 | AI spend and use | Is AI use inside budget and policy, team by team? | spend per team and per outcome, requests outside policy, reused prompts and skills | usage exports from each AI provider, the approved list of tools | read usage; draft a policy exception; budget changes after a yes | a team over budget; an unapproved tool; a cost spike from one job |
 | Answer-engine content | Will buyers and assistants find and trust our product pages? | pages with complete structured data, answer-engine citations, organic sessions | product and guide pages, search console exports, the page's markdown copy | read pages and exports; draft copy; publishing after a yes | a page missing price or stock data; a guide quoted wrongly; a duplicate page |
 
-Each starter becomes a plugin the same way: discover writes the spec, `/1xops:new-plugin` builds it, and the replay
+Each starter becomes a plugin the same way: discover writes the spec, `/1xops:plugin make` builds it, and the replay
 cases above are replaced by the team's own past runs before anything is proven.
