@@ -10,7 +10,7 @@ This folder is the catalogue. It holds a link to each selected free, open-source
 
 **1xops is the worked example.** It is built from this same catalogue, with the same parts and steps you use, so it proves the path end to end. Build your own 1xops-like plugin the same way.
 
-**Build your own.** Start from a job you already do: `/1xops:discover` writes the workflow spec, and `/1xops:new-plugin` builds the plugin from it. To start from a library plugin instead, `/1xops:customize-plugin` copies it once into its own folder here, renamed into your namespace, with its licence, NOTICE line and origin (`UPSTREAM.md`, with the pinned commit) kept, and lists every step that can change things. A link never turns into a copy in place: the copy is a new folder, and the link stays in the catalogue.
+**Build your own.** Start from a job you already do: `/1xops:discover` writes the workflow spec, and `/1xops:plugin make` builds the plugin from it. To start from a library plugin instead, `/1xops:plugin copy` copies it once into its own folder here, renamed into your namespace, with its licence, NOTICE line and origin (`UPSTREAM.md`, with the pinned commit) kept, and lists every step that can change things. A link never turns into a copy in place: the copy is a new folder, and the link stays in the catalogue.
 
 **Review before it ships.** A library plugin can carry servers or steps that change things. For example, the AWS library's `aws-core`, `aws-data-analytics` and `aws-startup-advisor` use a server that can call any AWS API, so a read-only role is what keeps them read-only. Check every skill and server of your copy, and run `1xops doctor`, before you list it.
 

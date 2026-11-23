@@ -20,14 +20,11 @@ One namespace for free and enterprise: every command and skill is `/1xops:<name>
 
 | Command | What it does | Edition |
 |---|---|---|
-| `/1xops:check` | What needs action first (red, amber, yellow), each with its exact fix; what is ready folded in one line. Runs `1xops doctor` | Free (this repository) |
+| `/1xops:check` (skill) | **ready**: what needs action first (red, amber, yellow), each with its exact fix; what is ready folded in one line. Runs `1xops doctor`. **setup**: recommends settings, plugins and connectors only from what the project approved, each marked tested, approved or not approved. Changes nothing. `/1xops:recommend-setup` still works for one release | Free (this repository) |
 | `/1xops:discover` (skill) | Turns a job you already do into a workflow spec and a workbook (`plugin.xlsx`) with one sheet per role: business rules for the analyst, integrations for the engineer, access for the administrator | Free |
-| `/1xops:new-plugin` (skill) | Builds a plugin from that spec, reusing an approved catalogue plugin first; the spec's examples become its first test | Free |
-| `/1xops:customize-plugin` (skill) | Copies a catalogue plugin into your own folder and name with its licence and origin, and lists what can change things; or adapts a plugin you own to your tools | Free |
-| `/1xops:recommend-setup` (skill) | Recommends settings, plugins and connectors only from what the project approved, each marked tested, approved or not approved; changes nothing | Free |
-| `/1xops:improve-instructions` (skill) | Scores the project's instructions and proposes short fixes, applied after a yes | Free |
-| `/1xops:capture-learnings` (skill) | Turns what a session learned into one-line instruction updates, applied after a yes | Free |
-| `/1xops:overview` (skill) | One page for leadership (`plugin-overview.html`: what it does, what it is built from, who approves what, what is proven, what is next; light and dark, phone and print), kept in sync with the workbook (two-way sync not yet proven); closes a session with a recap | Free |
+| `/1xops:plugin` (skill) | **make** a plugin from that spec, reusing an approved catalogue plugin first, with install lines for every part it depends on and a check that it loads; **copy** a catalogue plugin into your own folder and name with its licence and origin, listing what can change things; **change** a plugin you own to fit your tools. `/1xops:new-plugin` and `/1xops:customize-plugin` still work for one release | Free |
+| `/1xops:improve` (skill) | **capture**: turns a session's corrections, requests and habits into test cases, feature requests and one-line instruction updates; **audit**: scores the project's instructions and proposes short fixes. Every change applied after a yes. `/1xops:capture-learnings` and `/1xops:improve-instructions` still work for one release | Free |
+| `/1xops:overview` (skill) | One page for leadership (`plugin-overview.html`: what it does, what it costs to run, what it is built from, who approves what and how each yes is enforced, how people and the assistant sign in to each connector, what each part can use and who hands work to whom, what is proven, what is next; light and dark, phone and print), kept in sync with the workbook (each change shown, applied after a yes); closes a session with a recap | Free |
 | `/1xops:tenant-setup`, `change-request`, `vendor-review`, `process-doc`, `capacity-plan`, `compliance-tracking` (skills) | Operations playbooks per tenant, built with the free builder | Enterprise |
 | `/1xops:cost-check` | Top AWS and Azure savings, each with \$/month and its source | Enterprise |
 | `/1xops:ai-spend` | AI spend by team, vendor, and seat vs API | Enterprise |
@@ -57,7 +54,7 @@ It looks at the tenant's connectors in `.env.1xops`, the servers of this plugin 
 | Rule | Example |
 |---|---|
 | Every command and skill is `/1xops:<name>` | `/1xops:check` |
-| `<name>` is the outcome the user gets: lowercase kebab-case, 1–2 words | `new-plugin`, `cost-check` |
+| `<name>` is the outcome the user gets: lowercase kebab-case, 1–2 words | `plugin`, `cost-check` |
 | No edition, vendor or version in the name | not `/1xops:pro-cost`, not `/1xops:aws-cost-v2` |
 | A skill is named for the rule it enforces | `/1xops:read-only-cloud` |
 | A shipped name never changes meaning | `check` is the same command in both editions |
@@ -70,15 +67,21 @@ Defined in [`.mcp.json`](.mcp.json): GitHub, Azure DevOps, Atlassian, Notion and
 
 Azure DevOps needs your organisation: set `AZURE_DEVOPS_ORG` in your environment to use it. Without it the connector is listed as failed, which changes nothing else; every other connector asks for its own sign-in the first time.
 
-## Dependency
+## Parts on demand
 
-`plugin.json` declares 12 free plugins from the `knowledge-work-plugins` marketplace as dependencies, installed with 1xops: `operations`, `cowork-plugin-management`, `customer-support`, `data`, `engineering`, `enterprise-search`, `finance`, `human-resources`, `marketing`, `product-management`, `sales` and `small-business`. They are the parts a plugin is built from. The session start checks only the connectors of 1xops and of the plugins your folder turns on, so a connector you do not use never fills the screen (`ONEXOPS_IGNORE` leaves out more). 1xops commands are namespaced `/1xops:*` and never replace a library plugin's commands. Each builder skill names the generic version it improves on (for example `cowork-plugin-management:cowork-plugin-customizer`); the generic `operations:*` playbooks stay available to free users.
+1xops depends on no other plugin, so it loads in one step on any machine. The parts a plugin is built from stay visible in the catalogue (`plugins/`, the links the owner selected), and `/1xops:plugin make` installs only the parts its approved plan names, after your yes, then reloads plugins (`/reload-plugins`) so they work at once. `/1xops:check setup` suggests the others. `1xops install` adds the `knowledge-work-plugins` marketplace, so each part is one line away; for example the generic operations playbooks:
+
+```bash
+claude plugin install operations@knowledge-work-plugins
+```
+
+1xops commands are namespaced `/1xops:*` and never replace a library plugin's commands. Each builder skill names the generic version it improves on (for example `cowork-plugin-management:cowork-plugin-customizer`).
 
 Six builder skills are derived from library plugins and changed for 1xops. Each skill folder keeps an `UPSTREAM.md` with its origin, pinned commit and what changed. Every licence notice is in one place, the repository's [NOTICE](../../NOTICE), and installing from the marketplace brings the repository's `LICENSE` and `NOTICE` with it.
 
 ## Skills for building your own plugin
 
-Beside the dependencies above, a clone of this repository turns on `document-skills` (`document-skills:docx`, `:pdf`, `:pptx`, `:xlsx`) for every member, so a plugin you build can produce real Word, PDF, PowerPoint and Excel files, and `skill-creator` to write the skills. `commerce-builder` is there as a reference for building agents whose writes are staged and approved by a person. They are not part of this plugin and are not copied into it. See [`plugins/README.md`](../README.md).
+Beside the plugin, a clone of this repository turns on `document-skills` (`document-skills:docx`, `:pdf`, `:pptx`, `:xlsx`) for every member, so a plugin you build can produce real Word, PDF, PowerPoint and Excel files, and `skill-creator` to write the skills. `commerce-builder` is there as a reference for building agents whose writes are staged and approved by a person. They are not part of this plugin and are not copied into it. See [`plugins/README.md`](../README.md).
 
 ## Licence
 

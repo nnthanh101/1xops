@@ -40,34 +40,162 @@
     </div>
     <div class="stats">
       <div class="stat"><div class="stat-k">Version</div><div class="stat-v" data-slot="Plugin.version">[version]</div></div>
-      <div class="stat"><div class="stat-k">Runs in</div><div class="stat-v" data-slot="Plugin.surfaces">[proven surfaces] <span class="dim">· [not yet]</span></div></div>
-      <div class="stat"><div class="stat-k">Can change things</div><div class="stat-v" data-slot="Access.count_change">[n] <span class="dim">after a yes</span></div></div>
-      <div class="stat"><div class="stat-k">Shipped</div><div class="stat-v" data-slot="Plugin.listed">[yes · no]</div></div>
+      <div class="stat"><div class="stat-k">Proven in</div><div class="stat-v" data-slot="Plugin.surfaces">[n of 4 places] <span class="dim">· [not yet]</span></div></div>
+      <div class="stat"><div class="stat-k">Changes your systems</div><div class="stat-v" data-slot="Access.count_change">[no · after a named yes]</div></div>
+      <div class="stat"><div class="stat-k">Status</div><div class="stat-v" data-slot="Plugin.listed">[in use · ready to review · draft]</div></div>
     </div>
   </div>
 
-  <!-- ── business case first (Job sheet, reviewed by leadership): the outcome, the numbers the owner stated, the decision asked ── -->
-  <div class="value">
-    <p class="value-lede" data-slot="Job.value">[The value, in the owner's own words]</p>
-    <p class="value-sub" data-slot="Access.summary">[What it may change, and who says yes]</p>
+  <!-- reader bar: the key, and a view per reader that outlines its sections; nothing is hidden -->
+  <div class="reader" role="group" aria-label="Reader view">
+    <p class="reader-key"><b>Key</b> 🟢 proven on a real case · 🟡 built, not proven · 🔵 planned · <i>not yet measured</i> means no source holds it yet</p>
+    <div class="reader-views"><span class="reader-l">View for</span><button type="button" data-view="leadership" aria-pressed="false">Leadership</button><button type="button" data-view="finance" aria-pressed="false">Finance</button><button type="button" data-view="engineering" aria-pressed="false">Engineering</button><button type="button" data-view="data" aria-pressed="false">Data</button><button type="button" data-view="security" aria-pressed="false">Security</button><button type="button" data-view="all" aria-pressed="true">All</button></div>
+    <p class="reader-out" aria-live="polite">All sections, in page order.</p>
   </div>
-  <p class="lane-label">Business case</p>
+
+  <!-- The page answers the board first, in plain words, then the people who run the job. How it is built (parts, tools,
+       agents) is for reviewers, in the closed section at the end. Never name the builder, a tool or a model above it. -->
+  <div class="value">
+    <p class="value-lede" data-slot="Job.value">[The outcome, in the owner's own words]</p>
+    <p class="value-sub" data-slot="Job.personas">[Who it serves, and the people who run it]</p>
+  </div>
+  <div class="owr" data-for="leadership finance">
+    <div class="owr-c"><div class="owr-k">Outcome</div><div class="owr-v" data-slot="Job.outcome">[the result, measurable, from the Job sheet]</div></div>
+    <div class="owr-c"><div class="owr-k">Win</div><div class="owr-v" data-slot="Job.win">[what the business gains when it works]</div></div>
+    <div class="owr-c risk"><div class="owr-k">Risk if not</div><div class="owr-v" data-slot="Job.risk">[what the business loses or risks without it]</div></div>
+  </div>
+
+  <!-- ── what it returns and what it costs (Job and Proof sheets): only figures the sheets hold; never estimated, never converted ── -->
+  <div data-for="leadership finance">
+  <p class="lane-label">What it returns and what it costs</p>
   <div class="figures" data-slot="Job.case">
-    <div class="figure"><div class="figure-v">[baseline]</div><div class="figure-k">Baseline per run</div><div class="figure-src">Job · baseline</div></div>
+    <div class="figure"><div class="figure-v">[baseline]</div><div class="figure-k">Today, per run</div><div class="figure-src">Job · baseline</div></div>
     <div class="figure"><div class="figure-v">[target]</div><div class="figure-k">Target</div><div class="figure-src">Job · target</div></div>
     <div class="figure"><div class="figure-v">[measured · not yet]</div><div class="figure-k">Measured</div><div class="figure-src">Proof · after a real run</div></div>
-    <div class="figure"><div class="figure-v">[n of m]</div><div class="figure-k">Cases passed</div><div class="figure-src">Proof · verdicts</div></div>
+    <div class="figure"><div class="figure-v">[n of m]</div><div class="figure-k">Results accepted</div><div class="figure-src">Proof · reviewer verdicts</div></div>
   </div>
-  <div class="lane decision">
+  <div class="figures more" data-slot="Proof.cost">
+    <div class="figure"><div class="figure-v">[amount · not yet]</div><div class="figure-k">Cost per accepted result</div><div class="figure-src">Proof · running cost ÷ accepted</div></div>
+    <div class="figure"><div class="figure-v">[amount · not yet]</div><div class="figure-k">Running cost per run</div><div class="figure-src">Proof · as each run reports it</div></div>
+    <div class="figure"><div class="figure-v">[n of m · not yet]</div><div class="figure-k">Results rejected</div><div class="figure-src">Proof · reviewer verdicts</div></div>
+    <div class="figure"><div class="figure-v">[minutes · not yet]</div><div class="figure-k">Review minutes per accepted result</div><div class="figure-src">Proof · entered by the reviewer</div></div>
+  </div>
+  </div>
+  <div class="lane decision" data-for="leadership finance">
     <div class="lane-head"><span class="node-icon">🧭</span><h2>Decision asked</h2><span class="lane-meta" data-slot="Job.reviewed">reviewed by: [role · date · not yet]</span></div>
     <div class="lane-body">
-      <p class="value-proof" data-slot="Job.decision"><b>[The decision asked of leadership]</b></p>
+      <p class="value-proof" data-slot="Job.decision"><b>[The decision asked of the board]</b></p>
       <div class="cfoot" data-slot="Proof.summary"><span class="cf-i">🎯</span><span>[What is proven, and what is not yet]</span></div>
     </div>
   </div>
 
+  <!-- ── who decides what (the role sheets): one card per role, so no one person makes every decision ── -->
+  <div data-for="leadership engineering security">
+  <p class="lane-label">Who decides what</p>
+  <div class="roles" data-slot="Roles.cards">
+    <div class="role">
+      <div class="role-h">[n] · Owns [what this role decides]</div>
+      <div class="role-d">[the decisions: e.g. thresholds, exclusions, savings assumptions, confidence]</div>
+      <div class="role-w">👤🤖 With [person role] · [agent, if one helps] · a person approves [what]</div>
+      <div class="role-m">Measured by [metric]: [value · not yet measured]</div>
+      <div class="role-n"><b>Next step</b> [action]. If not, [what the business risks].</div>
+      <div class="figure-src">[sheet] · reviewed by [name · not yet]</div>
+    </div>
+  </div>
+  </div>
+
+  <!-- ── does it work (Proof sheet, the spec's pass mark, 1xops doctor): one row per question, each with its evidence ── -->
+  <div class="lane" data-for="leadership engineering">
+    <div class="lane-head"><span class="node-icon">🎯</span><h2>Does it work</h2><span class="lane-meta" data-slot="Proof.count">[n] cases · [n] runs</span></div>
+    <div class="lane-body"><div class="overflow">
+      <table>
+        <thead><tr><th>Question</th><th>Answer</th><th>Evidence</th></tr></thead>
+        <tbody data-slot="Proof.board_rows">
+          <tr><td>Does it reproduce the last real run closely enough to use?</td><td><span class="tag">[yes · no · not yet]</span></td><td>[the pass mark and the case]</td></tr>
+          <tr><td>Where has it been proven?</td><td>[project folder 🟢 · desktop workspace 🟡 · chat 🟡 · hosted runs 🔵]</td><td>[the case per place]</td></tr>
+          <tr><td>Are its connections ready?</td><td><span class="tag">[ready · n need action]</span></td><td>[1xops doctor, date]</td></tr>
+          <tr><td>Is it built only from approved, licensed parts?</td><td><span class="tag">[yes · n open]</span></td><td>[origin and licence of each part]</td></tr>
+          <tr><td>Can another person run it the same way?</td><td><span class="tag">[yes · not yet]</span></td><td>[a second run by someone else, or not yet]</td></tr>
+        </tbody>
+      </table>
+    </div></div>
+  </div>
+
+  <!-- ── what data it uses (Integrations sheet): sources, scope, period, the standard it is read in, where results go and stay ── -->
+  <div class="lane" data-for="data security engineering">
+    <div class="lane-head"><span class="node-icon">🗂️</span><h2>What data it uses</h2><span class="lane-meta">Integrations sheet</span></div>
+    <div class="lane-body"><div class="overflow">
+      <table>
+        <thead><tr><th>Source</th><th>What it reads</th><th>Scope</th><th>Period</th><th>Standard</th><th>Results go to</th><th>Data stays in</th></tr></thead>
+        <tbody data-slot="Integrations.data">
+          <tr><td><b>[source]</b></td><td>[what it reads]</td><td>[accounts, masked]</td><td>[time range]</td><td>[format or standard · none]</td><td>[destination]</td><td>[folder, region or tenant]</td></tr>
+        </tbody>
+      </table>
+    </div></div>
+  </div>
+
+  <!-- ── who can access what (Access and Integrations sheets): people sign in as themselves; the service reads as its own identity ── -->
+  <div class="lane" data-for="security data">
+    <div class="lane-head"><span class="node-icon">🔐</span><h2>Who can access what</h2><span class="lane-meta">Access sheet</span></div>
+    <div class="lane-body"><div class="overflow">
+      <table>
+        <thead><tr><th>Connector</th><th>Used for</th><th>People sign in</th><th>Assistant signs in as</th><th>Ready now</th><th>Reads or changes</th><th>Available</th></tr></thead>
+        <tbody data-slot="Integrations.signins">
+          <!-- People sign in: the status symbol as CONNECTORS.md writes it (✅ 🔑 🛠️ ⏳ ➖), then how. Ready now: 1xops doctor's word; "can change things" is .tag.fail -->
+          <tr><td><b>[connector]</b></td><td>[source it reads]</td><td>[symbol] [how people sign in]</td><td>[read-only role or scope]</td><td><span class="tag">[ready · check · signed out · missing]</span></td><td><span class="tag">[reads · changes after a yes]</span></td><td>[now · planned]</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="cfoot" data-slot="Access.revoke"><span class="cf-i">🔐</span><span>[How access is withdrawn, and where each run records which identity read which account]</span></div>
+    </div>
+    <div class="lane-body"><p class="og">approvals</p></div>
+    <div class="lane-body"><div class="overflow">
+      <table>
+        <thead><tr><th>Operation</th><th>Permission</th><th>Approver</th><th>Where it lands</th><th>Enforced by</th></tr></thead>
+        <tbody data-slot="Access.rows">
+          <!-- Enforced by: ask rule · tools list · host prompt · identity · written only (written only is shown as .tag.warn) -->
+          <tr><td>[operation]</td><td><span class="tag">[read · draft · after a yes · never]</span></td><td>[approver]</td><td>[destination]</td><td><span class="tag">[how the yes is enforced]</span></td></tr>
+        </tbody>
+      </table>
+    </div></div>
+  </div>
+
+  <!-- ── evals and runs (Proof sheet) ── -->
+  <div class="lane" data-for="engineering finance">
+    <div class="lane-head"><span class="node-icon">🧪</span><h2>Results on real cases</h2><span class="lane-meta" data-slot="Proof.count">[n] cases · [n] runs</span></div>
+    <div class="lane-body"><div class="overflow">
+      <table>
+        <thead><tr><th>Case</th><th>Input</th><th>Known-good answer</th><th>Verdict</th></tr></thead>
+        <tbody data-slot="Proof.evals">
+          <tr><td class="mono">case-01</td><td>[real input, redacted]</td><td>[known-good answer]</td><td><span class="tag">not run</span></td></tr>
+        </tbody>
+      </table>
+    </div></div>
+  </div>
+
+  <!-- ── version rail (Next sheet) and open questions ── -->
+  <div class="lane" data-for="leadership engineering">
+    <div class="lane-head"><span class="node-icon">🧭</span><h2>Next versions</h2><span class="lane-meta">open: <span data-slot="Next.open_count">[n]</span></span></div>
+    <div class="lane-body">
+      <div class="rail" data-slot="Next.rail">
+        <div class="ver now"><div class="ver-tag">v0 · now</div><div class="ver-what">[what]</div><div class="ver-why">[why not more yet]</div><div class="ver-how">[how]</div></div>
+      </div>
+      <div class="cfoot" data-slot="Next.open"><span class="cf-i">❓</span><span>Open: [questions, each with its role]</span></div>
+    </div>
+  </div>
+  <!-- ── evidence behind the claims: one note per figure or claim above, naming its source and date ── -->
+  <div class="lane evidence" data-for="leadership finance engineering data security">
+    <div class="lane-head"><span class="node-icon">🧾</span><h2>Evidence behind the claims</h2><span class="lane-meta" data-slot="Proof.evidence_date">re-read [date]</span></div>
+    <div class="lane-body" data-slot="Proof.evidence">
+      <details><summary>[claim, as it appears above]</summary><p>[source file or command, and its date; or: not yet measured, because no source holds it]</p></details>
+    </div>
+  </div>
+
+  <!-- ── how it is built: for reviewers (the parts, what each can use, the team of agents). Closed by default; left out of print ── -->
+  <details class="appendix" data-for="engineering security">
+    <summary>How it is built · for reviewers</summary>
   <!-- ── schema: how it starts → what it does → what it hands over; then the parts | the proof ── -->
-  <p class="lane-label">How it works · for the CTO</p>
+  <p class="lane-label">How it works</p>
   <div class="schema3">
     <p class="col-title s-t1">Starts</p>
     <p class="col-title s-t2">Plugin</p>
@@ -108,6 +236,8 @@
         <div class="env-l"><span class="env-k">runs</span><span data-slot="Plugin.host">[where it runs]</span></div>
         <div class="env-l"><span class="env-k">reads</span><span data-slot="Integrations.reads">[sources]</span></div>
         <div class="env-l"><span class="env-k">identity</span><span data-slot="Integrations.identity">[identity, checked by 1xops doctor]</span></div>
+        <!-- places: 🟢 proven there · 🟡 built, not proven · 🔵 planned -->
+        <div class="env-l wide"><span class="env-k">places</span><span data-slot="Plugin.places">[project folder 🟢 · desktop workspace 🟡 · chat 🟡 · hosted runs 🔵]</span></div>
       </div>
     </div>
     <div class="joint s-j2" aria-hidden="true"><span class="pulse"></span></div>
@@ -173,42 +303,36 @@
     </div>
   </div>
 
-  <!-- ── who approves what (Access sheet) ── -->
+  <!-- ── what each part can use (Components sheet, filled from the plugin folder): built-in tools, connectors, the plugin's own tools ── -->
   <div class="lane">
-    <div class="lane-head"><span class="node-icon">✋</span><h2>Who approves what</h2><span class="lane-meta">Access sheet · administrator</span></div>
+    <div class="lane-head"><span class="node-icon">🧰</span><h2>What each part can use</h2><span class="lane-meta">Components sheet · from the plugin folder</span></div>
     <div class="lane-body"><div class="overflow">
       <table>
-        <thead><tr><th>Operation</th><th>Permission</th><th>Approver</th><th>Where it lands</th></tr></thead>
-        <tbody data-slot="Access.rows">
-          <tr><td>[operation]</td><td><span class="tag">[read · draft · after a yes · never]</span></td><td>[approver]</td><td>[destination]</td></tr>
+        <thead><tr><th>Part</th><th>Does</th><th>Gives you</th><th>Built-in tools</th><th>Connectors</th><th>Own tools</th><th>Can change</th><th>Approved by</th></tr></thead>
+        <tbody data-slot="Components.tools">
+          <!-- an agent with no tools list inherits every tool: "every tool" as .tag.fail. A skill or command without allowed-tools: "any tool, the host asks" (plain); .tag.fail when allowed-tools lets a change run without asking -->
+          <tr><td><b>[part]</b><div class="dim">[skill · command · agent · hook]</div></td><td>[what it does]</td><td>[what it gives the owner]</td><td><code>[Read, Grep]</code></td><td>[connector · none]</td><td>[script · none]</td><td><span class="tag">[nothing · after a yes]</span></td><td>[role · open]</td></tr>
         </tbody>
       </table>
     </div></div>
   </div>
 
-  <!-- ── evals and runs (Proof sheet) ── -->
+  <!-- ── team of agents: keep this lane only when the plugin has agents; otherwise delete it ── -->
   <div class="lane">
-    <div class="lane-head"><span class="node-icon">🧪</span><h2>Evals and runs</h2><span class="lane-meta" data-slot="Proof.count">[n] cases · [n] runs</span></div>
-    <div class="lane-body"><div class="overflow">
-      <table>
-        <thead><tr><th>Case</th><th>Input</th><th>Known-good answer</th><th>Verdict</th></tr></thead>
-        <tbody data-slot="Proof.evals">
-          <tr><td class="mono">case-01</td><td>[real input, redacted]</td><td>[known-good answer]</td><td><span class="tag">not run</span></td></tr>
-        </tbody>
-      </table>
-    </div></div>
-  </div>
-
-  <!-- ── version rail (Next sheet) and open questions ── -->
-  <div class="lane">
-    <div class="lane-head"><span class="node-icon">🧭</span><h2>Next versions</h2><span class="lane-meta">open: <span data-slot="Next.open_count">[n]</span></span></div>
+    <div class="lane-head"><span class="node-icon">🤝</span><h2>Team of agents</h2><span class="lane-meta">who hands work to whom</span></div>
     <div class="lane-body">
-      <div class="rail" data-slot="Next.rail">
-        <div class="ver now"><div class="ver-tag">v0 · now</div><div class="ver-what">[what]</div><div class="ver-why">[why not more yet]</div><div class="ver-how">[how]</div></div>
-      </div>
-      <div class="cfoot" data-slot="Next.open"><span class="cf-i">❓</span><span>Open: [questions, each with its role]</span></div>
+      <div class="steps" data-slot="Components.team"><span class="chip">[lead: the command]</span><span class="chip">[agent]</span><span class="chip">[agent]</span><span class="chip human">[the person who decides]</span></div>
+      <div class="overflow"><table>
+        <thead><tr><th>Agent</th><th>Its job</th><th>Hands work to</th><th>Tools</th><th>Results rejected</th><th>Model cost per run</th></tr></thead>
+        <tbody data-slot="Components.agents_rows">
+          <tr><td><b>[agent]</b></td><td>[job]</td><td>[agent · nobody]</td><td><code>[tools]</code></td><td>[n of m · not yet]</td><td>[amount · not yet]</td></tr>
+        </tbody>
+      </table></div>
+      <div class="cfoot" data-slot="Components.team_settings"><span class="cf-i">⚙️</span><span>Runs of many helpers: [off · on, and why]. Advisor: [none · where it applies, not proven]</span></div>
     </div>
   </div>
+
+  </details>
   <footer class="brand-foot"><span data-slot="Brand.legal">[Legal line]</span><span>made with 1xops</span></footer>
   <!-- source of truth for builders: plugin.xlsx (one sheet per role) and the plugin folder; kept in sync by /1xops:overview -->
 </div>
@@ -222,6 +346,17 @@
     }
     buttons.forEach(function (b) { b.addEventListener('click', function () { show(b.dataset.themeChoice); }); });
     show(root.dataset.theme || '');
+    var views = document.querySelectorAll('[data-view]'), out = document.querySelector('.reader-out');
+    views.forEach(function (b) { b.addEventListener('click', function () {
+      var v = b.dataset.view, n = 0;
+      views.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      document.querySelectorAll('[data-for]').forEach(function (el) {
+        var hit = v !== 'all' && (' ' + el.dataset.for + ' ').indexOf(' ' + v + ' ') >= 0;
+        el.classList.toggle('for-hit', hit); if (hit) n++;
+      });
+      if (v === 'all') { delete document.body.dataset.view; out.textContent = 'All sections, in page order.'; }
+      else { document.body.dataset.view = v; out.textContent = b.textContent + ' view: ' + n + ' sections outlined; the others are dimmed, nothing is hidden.'; }
+    }); });
   })();
 </script>
 </body>

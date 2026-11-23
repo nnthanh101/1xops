@@ -13,7 +13,7 @@ const HELP = `Usage: 1xops <command> [options]
 
   doctor     check prerequisites, sign-in and connectors    [--aws-profile NAME] [--file PATH]
                                                              [--brief] [--hook] [--within SECONDS] [--probe]
-  install    add the marketplaces and install the plugin    [--scope user|project|local] [--edition free|enterprise]
+  install    add the marketplaces and install the plugin    [--scope user|project|local] [--edition free|enterprise] [--version x.y.z|latest]
                                                              [--file BUNDLE] [--yes]
   setup      guided setup: asks questions, writes ${DEFAULT_FILE}   [--file PATH]
   config     write settings and connectors for a scope      [--scope ${SCOPES.join('|')}] [--dir DIR]
@@ -37,7 +37,7 @@ if (!command || command === '--help' || command === '-h') {
 
 const OPTIONS = {
   doctor: { 'aws-profile': { type: 'string' }, file: { type: 'string', default: DEFAULT_FILE }, brief: { type: 'boolean', default: false }, hook: { type: 'boolean', default: false }, within: { type: 'string' }, probe: { type: 'boolean', default: false } },
-  install: { scope: { type: 'string', default: 'user' }, edition: { type: 'string', default: 'free' }, file: { type: 'string' }, yes: { type: 'boolean', default: false } },
+  install: { scope: { type: 'string', default: 'user' }, edition: { type: 'string', default: 'free' }, file: { type: 'string' }, version: { type: 'string' }, yes: { type: 'boolean', default: false } },
   setup: { file: { type: 'string', default: DEFAULT_FILE } },
   config: {
     scope: { type: 'string', default: 'team' },

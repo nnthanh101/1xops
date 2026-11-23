@@ -15,3 +15,4 @@ tmp/
 
 # Session worktrees stay inside the repo, never in ~/Projects
 .claude/worktrees/
+plugins/*/evals/results/

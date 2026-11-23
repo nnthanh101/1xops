@@ -1,6 +1,6 @@
 ---
 name: discover
-description: Turn a job the team already does into a workflow spec a plugin can be built from, starting from "show me the last time you did this". Use when the user says "I want a plugin for", "automate our review", "build a plugin for this job", "where do I start", "what should my plugin do" or "discover", or before /1xops:new-plugin when there is no spec yet. Works in a project folder, the desktop workspace, chat and headless runs.
+description: Turn a job the team already does into a workflow spec a plugin can be built from, starting from "show me the last time you did this". Use when the user says "I want a plugin for", "automate our review", "build a plugin for this job", "where do I start", "what should my plugin do" or "discover", or before /1xops:plugin when there is no spec yet. Works in a project folder, the desktop workspace, chat and headless runs.
 ---
 
 # /1xops:discover
@@ -38,22 +38,9 @@ Before the job, read the buyer's own documents (business case, strategy or launc
 
 Then show the business owner a five-line read-back and ask them to confirm or correct it. A row with no source stays `open`.
 
-### Naming, from the Lifecycle sheet
-| Part | Named for | Form |
-|---|---|---|
-| Plugin (namespace) | the buyer's product | their product name, lowercase kebab-case |
-| Command | an outcome a team asks for | verb-noun: `ship-theme`, `launch-product` |
-| Skill | a capability | domain noun: `liquid-theme`, `shop-agent` |
-| Agent | a team role | role noun: `liquid-developer`, `merchandiser` |
-| Connector (MCP) | the vendor system | the vendor's own name, never renamed |
+If the job is close to a row in `references/scenarios.md` (commerce increment, shopping assistant, cloud cost review, cloud operations, AI spend and use, answer-engine content), use that row's questions to fill step 0 faster. Record the starter in the spec, and replace every value with the team's own: a starter never supplies a measure or a figure.
 
-Choose each name in this order, and say which rule chose it:
-1. **The vendor's name**, when the stage reuses a vendor's command, skill or connector (for example `commerce-builder:review-commerce-agent`). Depend on it by name; never copy it under a new name.
-2. **The team's own word** from their documents (for example a task they already run).
-3. **The industry's standard term** (for example "headless storefront", "theme", "shopping agent" or "merchant agent").
-4. **Only then a new verb-noun outcome.**
-
-Use the words the teams already use in their documents. A name never carries the edition, the vendor of the builder or a version. Once shipped, a name never changes meaning.
+Propose the names of the plugin, its commands, skills, agents and connectors with `references/naming.md` (the vendor's name first, then the team's own word, the industry term, and only then a new outcome).
 
 ## The seven steps
 
@@ -81,20 +68,11 @@ Use the words the teams already use in their documents. A name never carries the
 - **Step 5.**
   - Brand the sample as the buyer, with figures that are synthetic or redacted, and say so in its first line.
   - The buyer's own customers, people and account numbers stay out: masked (`****1234`) or replaced by their role.
-- **Steps 6 and 7.** These define how the plugin is judged. Without them the spec is not ready for `/1xops:new-plugin`. Say so.
+- **Steps 6 and 7.** These define how the plugin is judged. Without them the spec is not ready for `/1xops:plugin make`. Say so.
 
 ## Write the spec
 
-- **Project folder:**
-  - Write `workflows/<job-slug>/spec.md` from `references/workflow-spec.md`.
-  - Write `workflows/<job-slug>/plugin.xlsx` from `references/plugin-template.xlsx`: copy the template, then fill each role's own sheet from the answers (Job, Business rules, Integrations, Access, Proof, Next).
-    - Delete the example rows, and leave an unanswered field empty with its role under Next → Open question.
-    - Use the `xlsx` skill if it is available. Otherwise use Python with openpyxl.
-    - If neither is available, write the spec only and say that the workbook needs the `xlsx` skill.
-  - The workbook is where each role edits its own decisions; `/1xops:overview` keeps it and the plugin in sync.
-  - Put the redacted previous artefacts in `workflows/<job-slug>/evidence/`: `last-run.md`, `accepted-1.md`, `dismissed-1.md`, and the branded sample `sample-<brand>.md`.
-  - Put each replay case in `workflows/<job-slug>/evals/<case>/`, in the format `claude plugin eval` runs: `prompt.md`, the input the plugin gets, and `graders/expected.md`, what a correct answer must contain or must not.
-  - Change no other file. Stage only the files you wrote (`git add <those paths>`), so they show up for review; never commit or push. The person commits.
+- **Project folder:** write `workflows/<job-slug>/spec.md`, `plugin.xlsx` (one sheet per role, finished with `scripts/workbook.py fit` until it prints `workbook: ok`), the redacted `evidence/` and the replay cases in `evals/`, exactly as `references/write-spec.md` says. Change no other file; stage only what you wrote, never commit or push.
 - **Desktop workspace:** write the same files (spec, workbook, evidence, evals) to the outputs folder.
 - **Chat:** show the spec in full in one message so it can be saved. Return the workbook as a file if code execution is available.
 - **Headless run:**
@@ -105,4 +83,4 @@ Use the words the teams already use in their documents. A name never carries the
 End with:
 - what is decided, and by whom
 - what is still open, and for which role
-- the next step: `/1xops:new-plugin workflows/<job-slug>/spec.md`, or `/1xops:customize-plugin` when one catalogue plugin already does most of the job
+- the next step: `/1xops:plugin make workflows/<job-slug>/spec.md`, or `/1xops:plugin copy` when one catalogue plugin already does most of the job

@@ -43,8 +43,23 @@ INSTALL_STEPS = [
     [s.HOST, "plugin", "marketplace", "remove", "1xops"],
     [s.HOST, "plugin", "marketplace", "add", "nnthanh101/1xops"],
     [s.HOST, "plugin", "install", "1xops@1ops"],
+    # an existing install stays on its version until the host updates it: install, then update
+    [s.HOST, "plugin", "marketplace", "update", "1ops"],
+    [s.HOST, "plugin", "update", "1xops@1ops"],
 ]
 SHOP = "https://shop.oceansoft.io"
+
+
+def pin_steps(version: str) -> list[list[str]]:
+    """One released version of the free edition (a rollback), or the latest again. The host keeps the source a
+    marketplace was first added with, so it is removed and added back at the release tag, then the plugin installed."""
+    source = "nnthanh101/1xops" if version == "latest" else f"nnthanh101/1xops#v{version}"
+    return [
+        [s.HOST, "plugin", "marketplace", "add", "anthropics/knowledge-work-plugins"],
+        [s.HOST, "plugin", "marketplace", "remove", "1ops"],
+        [s.HOST, "plugin", "marketplace", "add", source],
+        [s.HOST, "plugin", "install", "1xops@1ops"],
+    ]
 
 
 def enterprise_steps(folder: str) -> list[list[str]]:
@@ -55,6 +70,8 @@ def enterprise_steps(folder: str) -> list[list[str]]:
         [s.HOST, "plugin", "marketplace", "remove", "1xops"],
         [s.HOST, "plugin", "marketplace", "add", folder],
         [s.HOST, "plugin", "install", "1xops@1xops"],
+        [s.HOST, "plugin", "marketplace", "update", "1xops"],
+        [s.HOST, "plugin", "update", "1xops@1xops"],
     ]
 
 
@@ -310,7 +327,7 @@ def _edition_row(edition: str, plugin: str) -> tuple[str, bool, bool, str]:
             "edition",
             False,
             False,
-            f"{found}; this 1xops command is {__version__}: uv tool upgrade 1xops (or npm install -g 1xops)",
+            f"{found}; this 1xops command is {__version__}: uv tool install 1xops@latest (or npm install -g 1xops@latest)",
         )
     if _semver(plugin) < _semver(__version__):
         return (
@@ -975,6 +992,17 @@ def cmd_install(args: argparse.Namespace) -> int:
         console.print(f"[red]'{s.HOST}' CLI not found; run '1xops doctor'.[/]")
         return 1
     steps, folder, bundle = INSTALL_STEPS, None, None
+    if args.pin is not None:
+        if args.edition == "enterprise":
+            print(
+                "1xops install: --version is for the free edition; the enterprise bundle carries its own version",
+                file=sys.stderr,
+            )
+            return 2
+        if args.pin != "latest" and not SEMVER.match(args.pin):
+            print("1xops install: --version must be x.y.z or latest", file=sys.stderr)
+            return 2
+        steps = pin_steps(args.pin)
     if args.edition == "enterprise":
         if not args.file:
             print(
@@ -1004,7 +1032,8 @@ def cmd_install(args: argparse.Namespace) -> int:
                 console.print(Text(msg, style="red"), soft_wrap=True)
                 return 2
     for step in steps:
-        step = [*step, "--scope", args.scope]
+        # the host takes no scope for a marketplace update
+        step = [*step] if step[2:4] == ["marketplace", "update"] else [*step, "--scope", args.scope]
         console.print(Text(f"$ {' '.join(step)}", style="bold"), soft_wrap=True)
         if not args.yes:
             continue
@@ -1273,6 +1302,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="free (default) or enterprise",
     )
     p.add_argument("--file", help="enterprise: the bundle downloaded from your order")
+    p.add_argument(
+        "--version",
+        dest="pin",
+        metavar="X.Y.Z",
+        help="free edition: install this released version (roll back), or latest to return",
+    )
     p.add_argument("--yes", action="store_true", help="run the commands (default: show them)")
     p.set_defaults(func=cmd_install)
 

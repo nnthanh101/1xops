@@ -28,7 +28,9 @@ echo "release: v$V (latest released: v${last:-none})"
 
 mkdir -p tmp
 echo "release: local first - task gate (lint, tests, act, image, every command as a customer sees it)"
-task gate >tmp/gate-release.log 2>&1 || { echo "release: task gate fails; see tmp/gate-release.log"; exit 1; }
+# three runs per eval case: one run can flip a case either way, and this score goes into the release question
+RUNS=${RUNS:-3} task gate >tmp/gate-release.log 2>&1 || { echo "release: task gate fails; see tmp/gate-release.log"; exit 1; }
+[ -f tmp/evals/latest/summary.txt ] && { echo "release: eval cases (advice):"; tail -1 tmp/evals/latest/summary.txt; }
 
 py=$(grep -E '^version = ' packages/python/pyproject.toml | cut -d'"' -f2)
 js=$(node -p "require('./packages/npm/package.json').version")
@@ -60,15 +62,27 @@ git fetch -q origin
 git rev-parse -q --verify "refs/tags/v$V" >/dev/null || git tag "v$V" origin/main
 git push -q origin "v$V"
 
+# The run for this tag on this commit. Never by tag name alone: a reused tag name matches an old run of another commit,
+# and GitHub sometimes starts no run for a tag push, so after 30 seconds start one on the tag (a dispatch runs the same checks).
+sha=$(git rev-parse "v$V^{commit}")
+runs_for_tag() { gh run list -R $R -w release.yml -L 40 --json databaseId,headSha,headBranch,status \
+  --jq "[.[] | select(.headSha==\"$sha\" and .headBranch==\"v$V\")]"; }
 run=""
-for _ in $(seq 30); do
-  run=$(gh run list -R $R -w release.yml -b "v$V" -L 1 --json databaseId --jq '.[0].databaseId // empty')
+for i in $(seq 60); do
+  run=$(runs_for_tag | jq -r '.[0].databaseId // empty')
   [ -n "$run" ] && break
+  if [ "$i" = 15 ]; then
+    echo "release: GitHub started no Release run for the tag push; starting one on v$V"
+    gh workflow run release.yml -R $R --ref "v$V"
+  fi
   sleep 2
 done
-[ -n "$run" ] || { echo "release: no Release run started for v$V; see https://github.com/$R/actions"; exit 1; }
+[ -n "$run" ] || { echo "release: no Release run for v$V on $sha; see https://github.com/$R/actions"; exit 1; }
 echo "release: approve the 'release' environment once: https://github.com/$R/actions/runs/$run"
 gh run watch "$run" -R $R --exit-status >/dev/null || { echo "release: the Release run failed; see the link above"; exit 1; }
+# A late tag-push run can appear next to the one that published: it must never be approved. Name it; the owner cancels it.
+runs_for_tag | jq -r --arg run "$run" '.[] | select((.databaseId|tostring) != $run and .status != "completed")
+  | "release: run \(.databaseId) is a duplicate for this tag and waits for approval: do not approve it; cancel it with gh run cancel \(.databaseId) -R '"$R"'"'
 
 # The registries need a moment to serve a new version everywhere. Prove only once the files a customer's install
 # fetches answer: PyPI's simple index (what uv and pip read) and the npm tarball. Their JSON APIs answer first (up to 5 min).
@@ -82,4 +96,8 @@ done
 proof=tmp/evidence-$V.md
 set +e; bash scripts/verify-release.sh "$V" | tee "$proof"; failed=${PIPESTATUS[0]}; set -e
 [ "$failed" -eq 0 ] || { echo "release: v$V is published but $failed check(s) failed; the story stays open"; exit 1; }
+# then as a new member: install the release fresh and build and copy a plugin from synthetic inputs (MEMBER_PROOF=0 skips)
+if [ "${MEMBER_PROOF:-1}" != 0 ]; then
+  bash scripts/member-proof.sh "$V" || { echo "release: v$V is published; the member proof failed (tmp/member-proof-$V/summary.txt); the story stays open"; exit 1; }
+fi
 echo "release: v$V shipped and proven; proof in $proof (local, not posted)"

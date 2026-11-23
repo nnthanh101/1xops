@@ -27,7 +27,8 @@ grep -Eq "│ connectors +│ connector +│ missing +│ no \.env\.1xops here: 
 printf "ONEXOPS_CONNECTORS=aws\nAWS_BILLING_PROFILE=readonly\nAWS_OPERATIONS_PROFILE=readonly\n" >.env.1xops
 sum=$(cksum .env.1xops)
 1xops doctor >doctor.txt 2>&1 || true
-grep -Eq "│ aws AWS_BILLING_PROFILE +│ connector +│ missing +│ install the AWS CLI" doctor.txt
+# without the AWS CLI (PyPI, npm) the fix is to install it; the image ships it, so the fix is the missing profile
+grep -Eq "│ aws AWS_BILLING_PROFILE +│ connector +│ missing +│ (install the AWS CLI|profile readonly not found: aws configure sso)" doctor.txt
 [ "$sum" = "$(cksum .env.1xops)" ]
 grep " connector " doctor.txt >"$HOME/connectors.txt"
 echo "$v; doctor names each signed-out or missing connector with its fix and changes nothing; profiles, org config (pinned, Jira and cloud writes ask first), local scope writes nothing without the host CLI"'

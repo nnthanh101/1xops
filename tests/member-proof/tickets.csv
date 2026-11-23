@@ -1,0 +1,4 @@
+key,summary,owner,status,created
+OPS-412,Stop 4 idle non-prod m6i.xlarge,platform engineer,Done,2026-11-03
+OPS-413,Migrate 38 gp2 volumes to gp3,platform engineer,In progress,2026-11-03
+OPS-414,Investigate NAT gateway data processing growth,platform engineer,To do,2026-11-03

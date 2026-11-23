@@ -205,7 +205,7 @@ const compare = (a, b) => { for (let i = 0; i < Math.max(a.length, b.length); i+
 function editionRow(edition, plugin, cli) {
   const found = `${edition} ${plugin}`.trim();
   const order = plugin && cli ? compare(semver(plugin), semver(cli)) : 0;
-  if (order > 0) return ['edition', false, false, `${found}; this 1xops command is ${cli}: uv tool upgrade 1xops (or npm install -g 1xops)`];
+  if (order > 0) return ['edition', false, false, `${found}; this 1xops command is ${cli}: uv tool install 1xops@latest (or npm install -g 1xops@latest)`];
   if (order < 0) return ['edition', false, false, `${found}; this 1xops command is ${cli}: run /plugin update 1xops in the assistant`];
   return ['edition', false, true, found];
 }
@@ -556,9 +556,24 @@ const INSTALL_STEPS = [
   [s.HOST, 'plugin', 'marketplace', 'remove', '1xops'],
   [s.HOST, 'plugin', 'marketplace', 'add', 'nnthanh101/1xops'],
   [s.HOST, 'plugin', 'install', '1xops@1ops'],
+  // an existing install stays on its version until the host updates it: install, then update
+  [s.HOST, 'plugin', 'marketplace', 'update', '1ops'],
+  [s.HOST, 'plugin', 'update', '1xops@1ops'],
 ]
 
 const SHOP = 'https://shop.oceansoft.io';
+
+// One released version of the free edition (a rollback), or the latest again. The host keeps the source a
+// marketplace was first added with, so it is removed and added back at the release tag, then the plugin installed.
+const pinSteps = (version) => {
+  const source = version === 'latest' ? 'nnthanh101/1xops' : `nnthanh101/1xops#v${version}`;
+  return [
+    [s.HOST, 'plugin', 'marketplace', 'add', 'anthropics/knowledge-work-plugins'],
+    [s.HOST, 'plugin', 'marketplace', 'remove', '1ops'],
+    [s.HOST, 'plugin', 'marketplace', 'add', source],
+    [s.HOST, 'plugin', 'install', '1xops@1ops'],
+  ];
+};
 
 // Free edition out, enterprise in: the same plugin name 1xops, from the unpacked bundle as marketplace 1xops.
 const enterpriseSteps = (folder) => [
@@ -567,6 +582,8 @@ const enterpriseSteps = (folder) => [
   [s.HOST, 'plugin', 'marketplace', 'remove', '1xops'],
   [s.HOST, 'plugin', 'marketplace', 'add', folder],
   [s.HOST, 'plugin', 'install', '1xops@1xops'],
+  [s.HOST, 'plugin', 'marketplace', 'update', '1xops'],
+  [s.HOST, 'plugin', 'update', '1xops@1xops'],
 ];
 
 const SEMVER = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.]+)?$/;
@@ -601,6 +618,17 @@ export function install(opts) {
     return 1;
   }
   let steps = INSTALL_STEPS;
+  if (opts.version !== undefined) {
+    if (opts.edition === 'enterprise') {
+      console.error('1xops install: --version is for the free edition; the enterprise bundle carries its own version');
+      return 2;
+    }
+    if (opts.version !== 'latest' && !SEMVER.test(opts.version)) {
+      console.error('1xops install: --version must be x.y.z or latest');
+      return 2;
+    }
+    steps = pinSteps(opts.version);
+  }
   if (opts.edition === 'enterprise') {
     if (!opts.file) {
       console.log(`The enterprise edition is sold at ${SHOP}. Download the bundle from your order, then run:`);
@@ -621,7 +649,8 @@ export function install(opts) {
     }
   }
   for (const base of steps) {
-    const step = [...base, '--scope', opts.scope];
+    // the host takes no scope for a marketplace update
+    const step = base[2] === 'marketplace' && base[3] === 'update' ? [...base] : [...base, '--scope', opts.scope];
     console.log(color('bold', `$ ${step.join(' ')}`));
     if (!opts.yes) continue;
     const { code, out } = run(step[0], step.slice(1), 180000);

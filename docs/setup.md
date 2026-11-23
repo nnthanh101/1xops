@@ -7,12 +7,16 @@ Two audiences: people who **use** 1xops, and the maintainer who **releases** it.
 | Step | Command |
 |---|---|
 | Check prerequisites and sign-in | `uvx 1xops doctor` |
-| Install the plugin | `uvx 1xops install --yes` |
+| Install the plugin, or update an existing install | `uvx 1xops install --yes` |
+| Go back one release (same day, no waiting for a fix) | `uvx 1xops install --version 0.4.0 --yes`, then restart the assistant |
+| Return to the latest release | `uvx 1xops install --version latest --yes` |
 | Configure (guided) | `uvx 1xops setup` or `npx 1xops setup` → writes `.env.1xops`, shows the diff, asks before writing |
 | Configure (file) | `uvx 1xops config --file .env.1xops --yes` |
 | Team or org scope: load your values | `eval "$(uvx 1xops env)"` |
 
 Scopes, the `.env.1xops` format and the connector profiles are in the [command-line README](../packages/python/README.md). Keep a personal `1xops.yaml` out of git.
+
+Going back one release removes the plugin's marketplace, adds it back at that release's tag and installs it: the assistant keeps the source a marketplace was first added with, so a re-add alone changes nothing. Your settings and `.env.1xops` are not touched.
 
 ## Contribute (every clone)
 
@@ -73,3 +77,15 @@ gh api -X POST repos/nnthanh101/1xops/rulesets --input .github/rulesets/main.jso
 2. `task release VERSION=x.y.z STORY=n`, then approve the `release` environment once, at the link it prints. It merges `develop` into `main` once the checks pass, tags it, waits for PyPI, npm and the images, installs the release from every channel in clean containers and keeps that proof in `tmp/` (never posted: it can carry tenant names).
 
 `task status` shows what customers can install today, the proof kept in `tmp/` and CI health.
+
+### Continuous delivery
+
+| Step | What runs | Who |
+|---|---|---|
+| Every change | `task gate`: lint, tests, the Release workflow with act, the image, the UX proof, and, when the plugin changed since the last release, `task evals` (each case's score with the plugin, without it, and the gain) | the session, before a hand-over |
+| Early access | ring 0: the maintainer and working sessions run `develop` (the marketplace source `nnthanh101/1xops#develop`); ring 1: the first customer's own folder runs the candidate for its next real job before the release | no extra approval |
+| Release | `task release`: the gate, one approval, the publish, `verify-release.sh` on every channel, then `task member-proof` (a new member installs the release and builds and copies a plugin from synthetic inputs) | the owner approves once |
+| After a bad release | `1xops install --version <previous> --yes` for anyone affected, then a patch | anyone |
+| Every month | `task metrics`: releases a week, lead time, change failure rate, time to restore | the owner reads it |
+
+Model runs in `task evals` and `task member-proof` use your own sign-in and cost money; `task evals` stops at `MAX_USD` (15 by default). Their reports stay in `tmp/` and are never published.

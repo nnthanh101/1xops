@@ -27,7 +27,40 @@ tasks:
       - mkdir -p tmp && act pull_request -W .github/workflows/release.yml --rm >tmp/act-gate.log 2>&1 || { tail -30 tmp/act-gate.log; exit 1; }
       - task: image
       - task: ux
+      - |
+        # the builder skills' cases, only when the plugin changed since the last release: advice for the release question
+        last=$(git tag --list 'v*' --sort=-v:refname | head -1)
+        if [ -n "$last" ] && git diff --quiet "$last" -- plugins/1xops; then echo "gate - evals skipped: plugins/1xops is as released in $last"
+        else echo "gate - evals (advice, model runs; summary in tmp/evals/latest/summary.txt)"; bash scripts/evals.sh; fi
       - echo "gate - all passed. Look at tmp/ux/*.svg before calling it done."
+
+  evals:
+    desc: '🧪 Replay the builder skills'' cases as a member would: each case''s score and its gain over a run without the plugin'
+    summary: |
+      Business value: a skill that stops doing its job is caught before a release, not by a customer.
+      Scenario: a wording change makes discover skip "show me the last time"; its case drops and the release question shows it.
+      Model runs on your sign-in, stopped at MAX_USD; the report stays in tmp/evals/ and is never published.
+      Usage: task evals [RUNS=1] [MAX_USD=15] [CASE='discover-*']
+    dir: '{{.ROOT_DIR}}'
+    cmds: ['RUNS={{.RUNS}} MAX_USD={{.MAX_USD}} CASE={{.CASE}} bash scripts/evals.sh']
+
+  metrics:
+    desc: '📈 Delivery measures: releases a week, lead time, change failure rate, time to restore'
+    summary: |
+      Business value: "continuous delivery" is a figure the board can check, not a slogan.
+      Scenario: before the monthly review the owner reads how often releases ship and how often one needs a fix.
+      Usage: task metrics [DAYS=90]
+    dir: '{{.ROOT_DIR}}'
+    cmds: ['DAYS={{.DAYS}} bash scripts/metrics.sh']
+
+  member-proof:
+    desc: '🧑‍💻 Prove a published release as a new member: install it fresh, then build and copy a plugin from synthetic inputs'
+    summary: |
+      Business value: every release is proven the way a customer meets it, without a person running the steps by hand.
+      Scenario: after the owner approves a release, the same five cases run against what was published.
+      Model runs on your sign-in; evidence stays in tmp/member-proof-VERSION/. Usage: task member-proof [V=x.y.z]
+    dir: '{{.ROOT_DIR}}'
+    cmds: ['bash scripts/member-proof.sh {{.V}}']
 
   lint:
     desc: '🧹 Style and format checks, exactly as CI runs them'
