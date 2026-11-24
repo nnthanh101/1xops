@@ -37,6 +37,8 @@ they ask.
 
 If the folders of one place are missing, use the row that fits. Never stop only because the desktop folders are absent.
 
+In a project folder the plugin is written to `plugins/<name>/` of the folder you are working in (the team's own clone), never into a repository you only read from, such as a store or a source the spec points at.
+
 ## Rules for every mode
 
 - Approved parts only: links in `plugins/`, or plugins installed from an approved marketplace. Anything else is the owner's decision (a new link and a NOTICE line); say so and stop.

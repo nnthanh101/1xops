@@ -65,21 +65,16 @@
     <div class="owr-c risk"><div class="owr-k">Risk if not</div><div class="owr-v" data-slot="Job.risk">[what the business loses or risks without it]</div></div>
   </div>
 
-  <!-- ── what it returns and what it costs (Job and Proof sheets): only figures the sheets hold; never estimated, never converted ── -->
+  <!-- ── what changes for the buyer (Job and Proof sheets): ONE row, only figures a sheet holds (measured or the owner's
+       own); never estimated, never converted. A figure with no source is not a tile: it goes into the one "Not proven
+       yet" line. Leave out a cell rather than show "not yet" in it. ── -->
   <div data-for="leadership finance">
-  <p class="lane-label">What it returns and what it costs</p>
+  <p class="lane-label">What changes</p>
   <div class="figures" data-slot="Job.case">
-    <div class="figure"><div class="figure-v">[baseline]</div><div class="figure-k">Today, per run</div><div class="figure-src">Job · baseline</div></div>
-    <div class="figure"><div class="figure-v">[target]</div><div class="figure-k">Target</div><div class="figure-src">Job · target</div></div>
-    <div class="figure"><div class="figure-v">[measured · not yet]</div><div class="figure-k">Measured</div><div class="figure-src">Proof · after a real run</div></div>
-    <div class="figure"><div class="figure-v">[n of m]</div><div class="figure-k">Results accepted</div><div class="figure-src">Proof · reviewer verdicts</div></div>
+    <div class="figure"><div class="figure-v">[today, owner's figure]</div><div class="figure-k">Today</div><div class="figure-src">[who said it]</div></div>
+    <div class="figure"><div class="figure-v">[with the plugin, measured]</div><div class="figure-k">With the plugin</div><div class="figure-src">[the run that measured it]</div></div>
   </div>
-  <div class="figures more" data-slot="Proof.cost">
-    <div class="figure"><div class="figure-v">[amount · not yet]</div><div class="figure-k">Cost per accepted result</div><div class="figure-src">Proof · running cost ÷ accepted</div></div>
-    <div class="figure"><div class="figure-v">[amount · not yet]</div><div class="figure-k">Running cost per run</div><div class="figure-src">Proof · as each run reports it</div></div>
-    <div class="figure"><div class="figure-v">[n of m · not yet]</div><div class="figure-k">Results rejected</div><div class="figure-src">Proof · reviewer verdicts</div></div>
-    <div class="figure"><div class="figure-v">[minutes · not yet]</div><div class="figure-k">Review minutes per accepted result</div><div class="figure-src">Proof · entered by the reviewer</div></div>
-  </div>
+  <div class="cfoot" data-slot="Proof.not_yet"><span class="cf-i">⏳</span><span>Not proven yet: [one line, every open figure together]</span></div>
   </div>
   <div class="lane decision" data-for="leadership finance">
     <div class="lane-head"><span class="node-icon">🧭</span><h2>Decision asked</h2><span class="lane-meta" data-slot="Job.reviewed">reviewed by: [role · date · not yet]</span></div>
@@ -89,9 +84,33 @@
     </div>
   </div>
 
+  <!-- ── what's inside (Components sheet, plugin folder): every part, grouped Agents → Commands → Skills → Connectors, each
+       in one line: who it serves and what it does for them, in business words. No tool names, versions or licences here. ── -->
+  <div class="lane" data-for="leadership engineering finance data security">
+    <div class="lane-head"><span class="node-icon">🧩</span><h2>What's inside</h2><span class="lane-meta" data-slot="Components.count">[n] agents · [n] commands · [n] skills · [n] connectors</span></div>
+    <div class="lane-body"><div class="overflow">
+      <table>
+        <thead><tr><th>Part</th><th>Serves</th><th>What it does for them</th></tr></thead>
+        <tbody data-slot="Components.inside">
+          <tr><td colspan="3" class="og">Agents</td></tr>
+          <tr><td><b>[agent]</b></td><td>[role it helps]</td><td>[the outcome it gives, one line]</td></tr>
+          <tr><td colspan="3" class="og">Commands</td></tr>
+          <tr><td class="mono">[/plugin:command]</td><td>[who runs it]</td><td>[what they get]</td></tr>
+          <tr><td colspan="3" class="og">Skills</td></tr>
+          <tr><td><b>[skill]</b></td><td>[role]</td><td>[what it does for them]</td></tr>
+          <tr><td colspan="3" class="og">Connectors</td></tr>
+          <tr><td><b>[connector]</b></td><td>[role]</td><td>[what it lets the plugin read or do]</td></tr>
+        </tbody>
+      </table>
+    </div></div>
+  </div>
+
+  <!-- ── who decides what: the cards below only when a part can publish, spend or change records (an operations
+       plugin). Otherwise replace the cards with the one line in Roles.line. ── -->
   <!-- ── who decides what (the role sheets): one card per role, so no one person makes every decision ── -->
   <div data-for="leadership engineering security">
   <p class="lane-label">Who decides what</p>
+  <p class="value-sub" data-slot="Roles.line">[only when nothing can publish, spend or change records: who approves, in one line]</p>
   <div class="roles" data-slot="Roles.cards">
     <div class="role">
       <div class="role-h">[n] · Owns [what this role decides]</div>
@@ -114,7 +133,7 @@
           <tr><td>Does it reproduce the last real run closely enough to use?</td><td><span class="tag">[yes · no · not yet]</span></td><td>[the pass mark and the case]</td></tr>
           <tr><td>Where has it been proven?</td><td>[project folder 🟢 · desktop workspace 🟡 · chat 🟡 · hosted runs 🔵]</td><td>[the case per place]</td></tr>
           <tr><td>Are its connections ready?</td><td><span class="tag">[ready · n need action]</span></td><td>[1xops doctor, date]</td></tr>
-          <tr><td>Is it built only from approved, licensed parts?</td><td><span class="tag">[yes · n open]</span></td><td>[origin and licence of each part]</td></tr>
+          <tr><td>Is it built only from approved parts?</td><td><span class="tag">[yes · n open]</span></td><td>[the approved list it was checked against]</td></tr>
           <tr><td>Can another person run it the same way?</td><td><span class="tag">[yes · not yet]</span></td><td>[a second run by someone else, or not yet]</td></tr>
         </tbody>
       </table>
@@ -183,18 +202,17 @@
       <div class="cfoot" data-slot="Next.open"><span class="cf-i">❓</span><span>Open: [questions, each with its role]</span></div>
     </div>
   </div>
+  <!-- ── how it is built: for reviewers (the parts, what each can use, the team of agents). Closed by default; left out of print ── -->
+  <details class="appendix" data-for="engineering security">
+    <summary>How it is built · for reviewers</summary>
+  <!-- ── schema: how it starts → what it does → what it hands over; then the parts | the proof ── -->
   <!-- ── evidence behind the claims: one note per figure or claim above, naming its source and date ── -->
-  <div class="lane evidence" data-for="leadership finance engineering data security">
+  <div class="lane evidence" data-for="engineering security">
     <div class="lane-head"><span class="node-icon">🧾</span><h2>Evidence behind the claims</h2><span class="lane-meta" data-slot="Proof.evidence_date">re-read [date]</span></div>
     <div class="lane-body" data-slot="Proof.evidence">
       <details><summary>[claim, as it appears above]</summary><p>[source file or command, and its date; or: not yet measured, because no source holds it]</p></details>
     </div>
   </div>
-
-  <!-- ── how it is built: for reviewers (the parts, what each can use, the team of agents). Closed by default; left out of print ── -->
-  <details class="appendix" data-for="engineering security">
-    <summary>How it is built · for reviewers</summary>
-  <!-- ── schema: how it starts → what it does → what it hands over; then the parts | the proof ── -->
   <p class="lane-label">How it works</p>
   <div class="schema3">
     <p class="col-title s-t1">Starts</p>

@@ -6,3 +6,4 @@
 - Authority: read costs yes; draft a Jira ticket yes; file a ticket only after the delivery lead approves; never change a resource.
 - Success measure: preparation time from about 3 hours to under 30 minutes, and the delivery lead accepts at least 4 of 5 findings without edits.
 - Plugin name for the build: acme-cost-review. Fork name for the catalogue copy: acme-ops. NOTICE line: yes.
+- Licence and author for the plugin: Apache-2.0, author "Acme MSP" (a made-up company for this test).

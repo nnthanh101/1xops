@@ -17,6 +17,16 @@ Ask for one first: **"Show me the last time you did this job."** If there is non
 
 Write the questions in plain language, one step at a time. Never ask for passwords, keys or tokens.
 
+**Ask with scored options.** When the host has a question tool (for example AskUserQuestion), ask each round there:
+- one question per open gap, at most four in a round;
+- two to four options in the owner's business words, each with a score out of 100 and the business value it gives,
+  with the option you recommend first and marked "(Recommended)";
+- options come from what you already read (their documents, site, last run), never from an industry default;
+- ask for the outcome and who it serves; never propose a date or a number the owner has not given; an answer of
+  "Other" is taken in their words.
+Without a question tool, write the same options as a numbered list in chat. In a headless run, take the pick from the
+brief and record it with its score.
+
 ## Who decides what
 
 Three roles each own a part of the spec. Do not make one person answer for all three. Mark each section with its owner, and leave a section open for the right person rather than guessing.
@@ -30,7 +40,7 @@ Three roles each own a part of the spec. Do not make one person answer for all t
 ## Step 0: understand the business
 
 Before the job, read the buyer's own documents (business case, strategy or launch memo, decision records, README, the site's own pages) and fill two sheets, naming the source of every row:
-- **Business:** industry, business domain, the company, the buyer and the business owner, their strategy, one to three measurable objectives with a date and a KPI each, and the real-world scenario in their words.
+- **Business:** industry, business domain, the company, the buyer and the business owner, their strategy, one to three measurable objectives, each with a KPI (a date only when the owner gives one), and the real-world scenario in their words.
 - **Lifecycle:** the end-to-end delivery of the outcome, one row per stage:
   - the team that does it, and the outcome it hands on;
   - the evidence in the repository;
