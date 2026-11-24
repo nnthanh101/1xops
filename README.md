@@ -1,12 +1,23 @@
 # 🥇 ONE 🧰 Cloud & AI Operations ⚙️
 
-**Turn a job your team already does into your own plugin, in one afternoon, from approved parts. Keep every decision with your people.**
+**Turn a job your team already does into your own plugin, from approved parts. Keep every decision with your people.**
 
 1xops is a free, open-source builder. You show it one real job: a store change, a cost review, an incident. It interviews
 the people who own the job, builds a plugin your team runs with one command, and hands the board one page and each role
 one sheet. Nothing is published, merged or changed without a yes.
 
-> **Status:** v0.4.3 on [PyPI](https://pypi.org/project/1xops/), [npm](https://www.npmjs.com/package/1xops), [Docker Hub](https://hub.docker.com/r/nnthanh101/1xops) and [ghcr.io](https://github.com/users/nnthanh101/packages/container/package/1xops).
+> **Status:** v0.4.4 on [PyPI](https://pypi.org/project/1xops/), [npm](https://www.npmjs.com/package/1xops), [Docker Hub](https://hub.docker.com/r/nnthanh101/1xops) and [ghcr.io](https://github.com/users/nnthanh101/packages/container/package/1xops).
+
+## Why I built 1xops
+
+> I run a Shopify store with two storefronts: a theme my team edits in Shopify, and a fast Next.js site. Our shoppers
+> describe what they need, but they rarely know a product's name. I wanted an assistant that finds the product and fills
+> the cart, the same on both sites, without handing my store, my prices or my decisions to anyone else.
+> So I built the builder first. 1xops asks the questions I would ask a new engineer, lets each person pick from scored
+> options, and builds only from parts I approved. Then I used it on my own store: that plugin is 1commerce.
+> Start the same way, with one job you already do: `git clone`, then `/1xops:check`.
+>
+> Nhat-Thanh Nguyen, founder, [OceanSoft](https://www.oceansoft.io)
 
 ## Who it is for
 
