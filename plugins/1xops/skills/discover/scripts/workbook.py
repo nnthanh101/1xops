@@ -2,8 +2,9 @@
 """Keep plugin.xlsx opening in Excel without a repair prompt.
 
     workbook.py check plugin.xlsx   exit 1 and one line per table Excel would repair, or "workbook: ok"
-    workbook.py fit   plugin.xlsx   put back a table header that data overwrote, then extend every table to its last
-                                    filled row; prints what it changed, then runs check
+    workbook.py fit   plugin.xlsx   put back a table header that data overwrote, extend every table to its last
+                                    filled row, and group the Components rows (agent, command, skill, connector, hook,
+                                    setting, then by name); prints what it changed, then runs check
 
 Excel refuses a table whose header cells differ from its column names, and hides rows below a table's range.
 Business purpose: the board and every role open their workbook straight away, with no "We found a problem" prompt.
@@ -52,6 +53,29 @@ def problems(wb):
     return out
 
 
+KIND_ORDER = ["agent", "command", "skill", "connector", "hook", "setting"]
+
+
+def group_components(ws, t):
+    """Order the Components rows the way a reader scans a plugin: agents, commands, skills, connectors, then the rest."""
+    c1, r1, c2, r2 = range_boundaries(t.ref)
+    rows = [[ws.cell(r, c).value for c in range(c1, c2 + 1)] for r in range(r1 + 1, r2 + 1)]
+    rows = [row for row in rows if any(v not in (None, "") for v in row)]
+
+    def key(row):
+        kind = str(row[0] or "").strip().lower()
+        rank = next((i for i, k in enumerate(KIND_ORDER) if kind.startswith(k)), len(KIND_ORDER))
+        return rank, kind, str(row[1] or "").lower()
+
+    ordered = sorted(rows, key=key)
+    if ordered == rows:
+        return False
+    for i, row in enumerate(ordered):
+        for j, value in enumerate(row):
+            ws.cell(r1 + 1 + i, c1 + j).value = value
+    return True
+
+
 def fit(wb):
     changed = []
     for ws, t in tables(wb):
@@ -72,6 +96,8 @@ def fit(wb):
             t.ref = ref
             if t.autoFilter is not None:
                 t.autoFilter.ref = ref
+        if ws.title == "Components" and group_components(ws, t):
+            changed.append("Components: rows grouped agent, command, skill, connector")
     return changed
 
 

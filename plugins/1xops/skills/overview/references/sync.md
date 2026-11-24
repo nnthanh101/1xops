@@ -10,4 +10,4 @@ Both can be edited: an analyst changes a threshold in Excel, and an engineer cha
 - **Both sides changed the same fact:** show both values and let the person pick. Never merge silently.
 - **A rule the owning role did not change:** never change it on its sheet without that role's yes. Name the role in the question.
 - **A fact with no fingerprint:** compare it with the plugin and with `git` history, report it as a sync gap, and offer to record its fingerprint.
-- After a sync, update `_sync`, then run `python3 "${CLAUDE_SKILL_DIR}/../discover/scripts/workbook.py" fit <plugin.xlsx>` (it extends each table to its last row and puts back an overwritten header) and refresh the page only after it prints `workbook: ok`.
+- After a sync, update `_sync`, then run `python3 "${CLAUDE_SKILL_DIR}/../discover/scripts/workbook.py" fit <plugin.xlsx>` (it extends each table to its last row, puts back an overwritten header, and groups the Components rows: agents, commands, skills, connectors) and refresh the page only after it prints `workbook: ok`.
