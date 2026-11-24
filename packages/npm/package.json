@@ -1,6 +1,6 @@
 {
   "name": "1xops",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "1xops by OceanSoft.io: set up the 1xops plugin, settings and read-only cloud connectors for an organisation, team or person. Native Node.js, no dependencies.",
   "license": "Apache-2.0",
   "author": "Nhat-Thanh Nguyen <nnthanh101@gmail.com> (https://www.oceansoft.io)",
