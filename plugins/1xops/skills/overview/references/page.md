@@ -6,8 +6,8 @@ Read from `SKILL.md` when writing the page for the first time, or when a section
   Page controls, not a section: a key (🟢 proven · 🟡 built, not proven · 🔵 planned) and a View for switch (Leadership, Finance, Engineering, Data, Security, All) at the top, which outline each reader's sections and dim the rest; nothing is hidden. Tag each section with the readers it serves (`data-for`). When someone asks for the page's sections, start at 1.
   1. The outcome in the owner's words, who it serves, then Outcome · Win · Risk if not.
   2. What changes: one row, today and with the plugin, only figures a sheet holds (measured, or the owner's own words
-     with who said them). Every figure not measured yet goes into one "Not proven yet" line; never a tile that says
-     "not yet".
+     with who said them). Leave the whole section out when no figure is measured or given: the gap is said once, in
+     the decision's footer, never as a tile or a line that says "not yet".
   3. The decision asked, with who reviewed it.
   4. What's inside: every agent, command, skill and connector, grouped in that order, each in one line: who it serves
      and what it does for them, in business words. Read it from the Components sheet; no tool names, versions or licences.

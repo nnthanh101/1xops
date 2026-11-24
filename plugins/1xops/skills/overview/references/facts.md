@@ -12,7 +12,7 @@ Read from `SKILL.md` before writing or refreshing the page. Record each fact wit
 | Hooks | `hooks/hooks.json`: event and what it runs. Each hook is marked "runs without being asked" |
 | Who it serves | the Job sheet's Who it serves row and the spec's step 1: the decision owner, who acts on the result, and the people who run the job |
 | Outcome · Win · Risk if not | the Job sheet: the outcome (the measurable result), Win, when it works, and Risk, if it is not done, in the owner's words |
-| What changes | the Job sheet's baseline (the owner's figure, with who gave it) and the Proof sheet's measured result. A figure neither holds is listed in the one "Not proven yet" line, never shown as a tile |
+| What changes | the Job sheet's baseline (the owner's figure, with who gave it) and the Proof sheet's measured result. With neither, the section is left out and the gap is said once in the decision's footer, never shown as a tile |
 | What's inside | the Components sheet, in its order (Agent, Command, Skill, Connector): Name, Gives you (who it serves) and Does (what it does for them), rewritten in business words if the sheet uses tool words |
 | Who decides what | the Start sheet (which role owns which sheet) and each sheet's Reviewed by row. One card per role: what it owns and decides; who it works with (the person, and an agent where one helps: 👤🤖); what a person approves; what it is measured by (or not yet measured); its next step from the Next sheet, with what the business risks if it is not done |
 | Evidence behind the claims | for every figure and claim above the closed section: the file or command it came from and its date. A claim with no source says "not yet measured" and names what would measure it |
