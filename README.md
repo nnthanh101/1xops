@@ -12,11 +12,11 @@ one sheet. Nothing is published, merged or changed without a yes.
 
 | You are | Your question | What you get |
 |---|---|---|
-| **CEO or business owner** | Is this worth doing, and what do I decide? | One page: the outcome in your words, what changes, what is inside, what is proven and the one decision asked |
-| **CTO or platform lead** | Can my team run it, and is it built from parts we trust? | A plugin in your own repository, built only from approved catalogue parts, validated and loaded before it is called built |
-| **CFO** | What does it cost, and what did it return? | Only measured figures. Anything not measured yet is said once, plainly, never estimated |
-| **Security lead** | What can it touch? | Read-only by default; every change waits for a named person's yes |
-| **Forward deployed engineer** | How do I get a customer from idea to a working pilot? | Five commands, the same at every customer, with the customer's own words and brand in every output |
+| **The business owner** | Is this worth doing, and what do I decide? | One page: the outcome in your words, what changes, what is inside, what is proven and the one decision asked |
+| **The engineering lead** | Can my team run it, and is it built from parts we trust? | A plugin in your own repository, built only from approved catalogue parts, validated and loaded before it is called built |
+| **Finance** | What does it cost, and what did it return? | Only measured figures. Anything not measured yet is said once, plainly, never estimated |
+| **Security** | What can it touch? | Read-only by default; every change waits for a named person's yes |
+| **A forward deployed engineer** | How do I get a customer from idea to a working pilot? | Five commands, the same at every customer, with the customer's own words and brand in every output |
 
 ## The lifecycle: five commands
 
