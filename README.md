@@ -10,14 +10,9 @@ one sheet. Nothing is published, merged or changed without a yes.
 
 ## Why I built 1xops
 
-> I run a Shopify store with two storefronts: a theme my team edits in Shopify, and a fast Next.js site. Our shoppers
-> describe what they need, but they rarely know a product's name. I wanted an assistant that finds the product and fills
-> the cart, the same on both sites, without handing my store, my prices or my decisions to anyone else.
-> So I built the builder first. 1xops asks the questions I would ask a new engineer, lets each person pick from scored
-> options, and builds only from parts I approved. Then I used it on my own store: that plugin is 1commerce.
-> Start the same way, with one job you already do: `git clone`, then `/1xops:check`.
->
-> Nhat-Thanh Nguyen, founder, [OceanSoft](https://www.oceansoft.io)
+> Shoppers describe what they need; they rarely know a product's name. I wanted my store to answer them and fill the
+> cart, on both of my storefronts, while I keep the store, the prices and every decision. 1xops built that plugin from
+> one job I already do. Start with yours: `git clone`, then `/1xops:check`.
 
 ## Who it is for
 
