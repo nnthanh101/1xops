@@ -27,6 +27,9 @@ Run `1xops doctor` in the current folder. It prints one row per check: `check | 
    - every row ok, ready or in host: **✅ Ready: nothing needs action.**
    - otherwise: **⚠️ N items need action, M are ready.** (count the rows)
 2. A table of only the rows that need action, sorted by importance: required first, then optional, then connectors.
+   When the request names the job (for example "a plugin for our Shopify store and our Next.js site"), keep only the
+   rows that job needs (the tools to build, and the connectors and sign-ins of the systems it names) and count the
+   rest in one line: `n other connectors are not set up; they are not needed for this job.` A required row always stays.
 
    | | What | Why it matters | Fix |
    |---|---|---|---|
@@ -37,7 +40,7 @@ Run `1xops doctor` in the current folder. It prints one row per check: `check | 
    - "What" is the check's name in plain words (for example "AWS sign-in", "GitHub connector (1xops)").
    - "Why it matters" is one short clause that you write. Never invent a cause the row does not state.
    - Keep the fix word for word from doctor's output. Never shorten a command, a path or a key.
-3. One line listing what is ready, folded: `🟢 Ready: git, claude, uv, … (n)`. Connectors that sign in inside the host go here as `in host: github, notion, …`, with the fix once: `run /mcp and choose <name>`.
+3. One line listing what is ready, folded: `🟢 Ready: git, claude, uv, … (n)`. Connectors that sign in inside the host go here as `in host: github, notion, …`, with the fix once: `run /mcp and choose <name>`. When the job is named, list only the host connectors that job uses.
 4. One closing line: `Full output: run 1xops doctor in a terminal. A plugin's readiness also shows on its page: /1xops:overview.`
 
 Rules:
