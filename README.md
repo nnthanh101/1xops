@@ -14,6 +14,11 @@ one sheet. Nothing is published, merged or changed without a yes.
 > cart, on both of my storefronts, while I keep the store, the prices and every decision. 1xops built that plugin from
 > one job I already do. Start with yours: `git clone`, then `/1xops:check`.
 
+[![Watch: shoppers ask, the cart fills, built with 1xOps in 5 commands (3 min)](showcases/1xops-builds-1commerce.jpg)](https://youtu.be/QMzABT5EAiE)
+
+**Watch the 3-minute film:** a shopper asks and the cart fills, on both storefronts; then the five commands that built
+it: check → discover → plugin → overview → improve.
+
 ## Who it is for
 
 | You are | Your question | What you get |
