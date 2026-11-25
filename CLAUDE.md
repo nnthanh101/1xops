@@ -1,5 +1,8 @@
 # 1xops: rules for sessions working in this repo
 
+These rules are for the maintainers of 1xops itself. In your own clone, build your plugins in `plugins/<name>`; the
+shipping rules below (what this repository may publish) apply only to this repository's releases.
+
 Owner and only IP holder: nnthanh101 | oceansoft.io. Public prose (README, docs, issues) names no AI vendor, tool or "agent".
 
 ## What ships

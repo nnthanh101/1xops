@@ -55,7 +55,15 @@ for _ in $(seq 30); do # a new commit's checks take a moment to register; --watc
   [ "$(gh pr view "$pr" -R $R --json statusCheckRollup --jq '.statusCheckRollup | length')" -gt 0 ] && break
   sleep 2
 done
-gh pr checks "$pr" -R $R --watch --fail-fast
+# A GitHub API error (it happened on 25 Nov 2026) ends --watch like a failure. Retry the wait up to 3 times; stop at
+# once only when a check really failed.
+for attempt in 1 2 3; do
+  gh pr checks "$pr" -R $R --watch --fail-fast && break
+  failed=$(gh pr checks "$pr" -R $R --json bucket --jq '[.[] | select(.bucket=="fail")] | length' 2>/dev/null || echo "")
+  [ "$failed" = 0 ] || { echo "release: a check failed on pull request #$pr; see gh pr checks $pr"; exit 1; }
+  [ "$attempt" = 3 ] && { echo "release: GitHub did not answer about the checks of #$pr; run task release again"; exit 1; }
+  echo "release: GitHub did not answer; waiting 30 s and watching the checks again ($attempt of 3)"; sleep 30
+done
 gh pr merge "$pr" -R $R --merge
 git fetch -q origin
 # A rerun after a later step failed keeps the tag it already made on main.

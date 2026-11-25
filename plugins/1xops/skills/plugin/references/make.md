@@ -61,6 +61,8 @@ Create, in this order:
    - Use HTTPS for remote servers.
    - If the host refuses to write `.mcp.json` (some headless runs do), write the same content to `mcp.proposed.json` in the plugin folder and say the owner renames it after review; never leave it only in the README.
 7. `evals/<case>/`: one folder per case from the spec's `evals/` (accepted, dismissed and the replay set), in the format `claude plugin eval` runs (`references/component-schemas.md`, Evals):
+   - Write each case's prompt the way a person asks, in plain words, never starting with the slash command, so the run shows whether the skill was chosen.
+   - A case whose known-good answer needs data that does not exist yet (no catalogue, no export) is marked `open` in its `case.json` with the data it waits for; report it as open, never as failed, and keep it out of the pass mark until the data exists.
    - `prompt.md` with `runs: 3`;
    - one grader per fact (`regex` where exact, `llm` otherwise), never one grader listing every fact;
    - one `tool_used` grader that the plugin's own skill or command ran;

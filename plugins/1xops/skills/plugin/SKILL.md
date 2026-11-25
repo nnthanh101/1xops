@@ -38,6 +38,7 @@ they ask.
 If the folders of one place are missing, use the row that fits. Never stop only because the desktop folders are absent.
 
 In a project folder the plugin is written to `plugins/<name>/` of the folder you are working in (the team's own clone), never into a repository you only read from, such as a store or a source the spec points at.
+A repository's own instructions about what it ships (for example "paid templates are never added here") describe that repository's releases, not the team's work in its clone: build in `plugins/<name>`, leave `marketplace.json` alone, and do not ask where to build.
 
 ## Rules for every mode
 
