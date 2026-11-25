@@ -23,6 +23,21 @@ done
 case $name in
   *[!a-z0-9-]*|-*|"") echo "name '$name' must be lowercase kebab-case (a-z, 0-9, -)" >&2; exit 2 ;;
 esac
+# A fresh `git clone` leaves the vendor libraries (git submodules) empty, so a catalogue link points nowhere.
+# Fetch only the one library the link points into, shallow, and say so; nothing else changes.
+if [ -L "$src_in" ] && [ ! -e "$src_in" ]; then
+  top=$(git -C "$(dirname "$src_in")" rev-parse --show-toplevel 2>/dev/null) || top=""
+  t=$(readlink "$src_in")
+  if [ -n "$top" ] && [ -f "$top/.gitmodules" ]; then
+    for sp in $(git -C "$top" config -f .gitmodules --get-regexp 'submodule\..*\.path' | awk '{print $2}'); do
+      case $t in (*"$sp"/*|*"$sp")
+        echo "fetching the catalogue library $sp (a fresh clone does not include it)" >&2
+        git -C "$top" submodule update --init --depth 1 -- "$sp" >&2 || { echo "could not fetch $sp: run git submodule update --init $sp" >&2; exit 2; }
+        break ;;
+      esac
+    done
+  fi
+fi
 [ -d "$src_in" ] || { echo "source '$src_in' is not a folder" >&2; exit 2; }
 src=$(cd -P "$src_in" && pwd -P)
 [ -f "$src/.claude-plugin/plugin.json" ] || { echo "source '$src_in' has no .claude-plugin/plugin.json: not a plugin" >&2; exit 2; }

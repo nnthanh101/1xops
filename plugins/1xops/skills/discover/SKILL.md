@@ -46,7 +46,7 @@ Before the job, read the buyer's own documents (business case, strategy or launc
   - the evidence in the repository;
   - the proposed names (below).
 
-Then show the business owner a five-line read-back and ask them to confirm or correct it. A row with no source stays `open`.
+Then show the business owner a five-line read-back of what you read (who they are, what they sell, the job, the outcome they want, what is missing) and wait for them to confirm or correct it **before the first scored round**; never skip it, even when the request asks for questions right away. A row with no source stays `open`.
 
 If the job is close to a row in `references/scenarios.md` (commerce increment, shopping assistant, cloud cost review, cloud operations, AI spend and use, answer-engine content), use that row's questions to fill step 0 faster. Record the starter in the spec, and replace every value with the team's own: a starter never supplies a measure or a figure.
 
